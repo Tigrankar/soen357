@@ -19,17 +19,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,9 +48,14 @@ public class MainActivity extends AppCompatActivity {
     private Uri photoURI1;
     private Uri oldPhotoURI;
 
+    private static FileWriter inventory;
+    private static Scanner scanner;
+
     private static final String errorFileCreate = "Error file create!";
     private static final String errorConvert = "Error convert!";
     private static final int REQUEST_IMAGE1_CAPTURE = 1;
+
+    String list = "";
 
     @BindView(R.id.ocr_image)
     ImageView firstImage;
@@ -50,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.ocr_text)
     TextView ocrText;
 
+    @BindView(R.id.inventory_text)
+    TextView inventoryText;
 
     int PERMISSION_ALL = 1;
     boolean flagPermissions = false;
@@ -188,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
     private void doOCR(final Bitmap bitmap) {
         if (mProgressDialog == null) {
             mProgressDialog = ProgressDialog.show(this, "Processing",
-                    "Doing OCR...", true);
+                    "Reading your receipt...", true);
         } else {
             mProgressDialog.show();
         }
@@ -200,7 +215,29 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
 
                         if (srcText != null && !srcText.equals("")) {
-                            ocrText.setText(srcText);
+
+
+                            String[] lines = srcText.toString().split(System.getProperty("line.separator"));
+
+                             for (int i=0; i<lines.length; i++){
+                                 if(lines[i].contains("RABAIS")){
+                                     continue;
+                                 }
+                                 else if(Character.isDigit(lines[i].charAt(0))){
+                                     continue;
+                                 }
+                                 else{
+                                    list += (lines[i]+"\n");
+                                 }
+                             }
+
+
+
+                            ocrText.setText(list);
+                             //inventoryText.setText(list);
+
+
+
                         }
                         mProgressDialog.dismiss();
                     }
