@@ -14,6 +14,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -63,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.ocr_text)
     TextView ocrText;
 
-    @BindView(R.id.inventory_text)
-    TextView inventoryText;
+    @BindView(R.id.recipe)
+    TextView recipeText;
 
     int PERMISSION_ALL = 1;
     boolean flagPermissions = false;
@@ -163,6 +166,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.recommend_button)
+    void onClickRecommendButton(){
+        if(list == ""){
+            recipeText.setText(" Your inventory is empty! Please scan a receipt first.");
+        }
+        else{
+            if(list.contains("TOMATE")){
+                TextView textview = (TextView)findViewById(R.id.recipe);
+                textview.setClickable(true);
+                textview.setMovementMethod(LinkMovementMethod.getInstance());
+                String text = "<a href='https://www.allrecipes.com/recipe/254517/spaghetti-sauce-with-fresh-tomatoes'> Spaghetti Recipe </a>";
+                textview.setText(Html.fromHtml(text));
+            }
+            else if(list.contains("BLEUETS")){
+                TextView textview = (TextView)findViewById(R.id.recipe);
+                textview.setClickable(true);
+                textview.setMovementMethod(LinkMovementMethod.getInstance());
+                String text = "<a href='https://www.allrecipes.com/recipe/12196/blueberry-pie'> Blueberry Pie Recipe </a>";
+                textview.setText(Html.fromHtml(text));
+            }
+            else{
+                TextView textview = (TextView)findViewById(R.id.recipe);
+                textview.setClickable(true);
+                textview.setMovementMethod(LinkMovementMethod.getInstance());
+                String text = "<a href='https://detoxinista.com/celery-juice-recipe/#wprm-recipe-container-28050'> Celery Drink Recipe </a>";
+                textview.setText(Html.fromHtml(text));
+            }
+
+        }
+    }
+
     public File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("MMdd_HHmmss").format(new Date());
@@ -215,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
 
                         if (srcText != null && !srcText.equals("")) {
-
+                            list += "Your list of ingredients:\n\n";
 
                             String[] lines = srcText.toString().split(System.getProperty("line.separator"));
 
