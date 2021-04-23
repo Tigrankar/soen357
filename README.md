@@ -1,10 +1,10 @@
 # soen35
 
-Running the application:
+<br> Running the application:
 
-Download latest version of Andorid Studio
-Clone this repository
-On Andorid Studio, open the project
-Connect an android phone to computer and ensure it is the device on android studio
-Run the app by clicking on the green arrow on android studio
-After installation the app is usable on the phone
+<br> Download latest version of Andorid Studio
+<br> Clone this repository
+<br> On Andorid Studio, open the project
+<br> Connect an android phone to computer and ensure it is the device on android studio
+<br> Run the app by clicking on the green arrow on android studio
+<br> After installation the app is usable on the phone
